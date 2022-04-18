@@ -1,8 +1,6 @@
 
 ##		THE TARGETS			##
 NAME		= 	minishell
-ECHO		=	bin/echo
-EXIT		= 	bin/exit
 
 ##		THE DIRECTORIES		##
 SRC_DIR		:=	src/
@@ -15,10 +13,7 @@ LIBFT_DIRECTORY :=	./libft
 LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
 ##		EXECUTABLES			##
-ECHO_SRC		:=	./src/bin/echo.c
-ECHO_DIR		:=	./bin
-EXIT_SRC		:=	./src/bin/exit.c
-EXIT_DIR		:=	./bin
+
 
 ##		COMPILATION			##
 CC := gcc
@@ -29,10 +24,14 @@ CFLAGS := -Wall -Wextra -Werror
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)
 
-SUBDIR	:=	src/ src/bin src/shell						\
-		 	src/shell/start src/shell/signal			\
-			src/shell/process src/shell/execution		\
-			src/shell/end								\
+SUBDIR	:=	src/\
+			src/builtin\
+			src/commands	src/commands/creation src/commands/expansion\
+			src/env\
+			src/error\
+			src/execution src/execution/binary_tree src/execution/command_execution \
+			src/parsing src/parsing/tokenizer src/parsing/utils \
+			src/signals
 
 RED		= \033[1;31m
 YEL		= \033[1;33m
@@ -47,20 +46,45 @@ RESET	= \033[0m
 # **************************************************************************** #
 
 SRCS = \
-	./src/shell/start/parsing.c \
-	./src/shell/start/terminal.c \
-	./src/shell/start/utils.c \
-	./src/shell/execution/execution_utils.c \
-	./src/shell/execution/execution.c \
-	./src/shell/signal/signal_utils.c \
-	./src/shell/signal/signal_handler.c \
-	./src/shell/process/process.c \
-	./src/shell/process/process_utils.c \
+	./src/signals/signal.c \
 	./src/main.c \
-
+	./src/execution/binary_tree/binary_tree.c \
+	./src/execution/binary_tree/binary_tree_utils.c \
+	./src/execution/command_execution/operator_execution.c \
+	./src/execution/command_execution/command_execution.c \
+	./src/execution/command_execution/redirection_execution.c \
+	./src/execution/command_execution/pipeline_execution.c \
+	./src/commands/expansion/expansion.c \
+	./src/commands/creation/commands_redirection.c \
+	./src/commands/creation/commands_utils.c \
+	./src/commands/creation/commands_arguments.c \
+	./src/commands/creation/commands.c \
+	./src/parsing/tokenizer/token_attribution.c \
+	./src/parsing/tokenizer/tokenizer_utils.c \
+	./src/parsing/tokenizer/tokenizer.c \
+	./src/parsing/utils/print.c \
+	./src/parsing/utils/token.c \
+	./src/parsing/utils/quote.c \
+	./src/parsing/utils/other.c \
+	./src/parsing/utils/character.c \
+	./src/parsing/input.c \
+	./src/error/error.c \
+	./src/builtin/exit.c \
+	./src/builtin/pwd.c \
+	./src/builtin/cd.c \
+	./src/builtin/echo.c \
+	#./src/env/lstenv.c \
+	#./src/env/addenv.c \
+	#./src/env/environment.c \
+	#./src/builtin/export.c \
+	#./src/builtin/unset.c 
 HEADERS = \
+	./includes/env.h\
+	./includes/syntax.h\
 	./includes/minishell.h\
-	./libft/libft.h\
+	./includes/tokens.h\
+	./includes/binary_tree.h\
+	./includes/command.h\
 
 ###▲▲▲<src-updater-do-not-edit-or-remove>▲▲▲
 
@@ -70,7 +94,7 @@ OBJ = $(SRC:.c=.o)
 OBJS = $(addprefix $(OBJ_DIR),$(OBJ))
 
 VPATH := $(SRC_DIR) $(OBJ_DIR) $(SUBDIR)
-all: $(NAME) $(ECHO) $(EXIT)
+all: $(NAME)
 
 $(OBJ_DIR)%.o: %.c $(HEADERS)
 			@mkdir -p $(OBJ_DIR)
@@ -87,12 +111,6 @@ $(NAME): $(LIBFT) $(SRCS) $(OBJS)
 		@printf "$(YEL)------------Linked------------------\n$(RESET)"
 		@printf " $(READLIB) $(RESET)\n"
 		@printf "$(GREEN)$(NAME) sucessfully created ! $(RESET)\n"
-
-$(ECHO):	$(ECHO_SRC)
-		$(CC) $(ECHO_SRC) -o $(ECHO)
-
-$(EXIT):	$(EXIT_SRC)
-		$(CC) $(EXIT_SRC) -o $(EXIT)
 clean:
 		@printf "\n $(RED)removing: $(RESET) $(OBJ_DIR)\n$(RESET)"
 		@rm -rf $(OBJ_DIR)
