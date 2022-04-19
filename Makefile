@@ -12,9 +12,6 @@ LIBFT_HEADER	:=	./libft
 LIBFT_DIRECTORY :=	./libft
 LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
-##		EXECUTABLES			##
-
-
 ##		COMPILATION			##
 CC := gcc
 READLIB :=  -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
@@ -24,14 +21,23 @@ CFLAGS := -Wall -Wextra -Werror
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)
 
-SUBDIR	:=	src/\
-			src/builtin\
-			src/commands	src/commands/creation src/commands/expansion\
-			src/env\
-			src/error\
-			src/execution src/execution/binary_tree src/execution/command_execution \
-			src/parsing src/parsing/tokenizer src/parsing/utils \
-			src/signals
+SUBDIR	:=	src													\
+			src/shell								 			\
+			src/shell/sub_system								\
+			src/shell/sub_system/terminal						\
+			src/shell/sub_system/error							\
+			src/shell/parsing									\
+			src/shell/parsing/utils								\
+			src/shell/parsing/tokenizer							\
+			src/shell/execution									\
+			src/shell/execution/commands						\
+			src/shell/execution/commands/creation				\
+			src/shell/execution/commands/expansion				\
+			src/shell/execution/commands_execution				\
+			src/shell/execution/commands_execution/binary_tree	\
+			src/builtin											\
+			#src/shell/sub_system/env							
+
 
 RED		= \033[1;31m
 YEL		= \033[1;33m
@@ -45,46 +51,49 @@ RESET	= \033[0m
 # **   Generated with https://github.com/lorenuars19/makefile-src-updater   ** #
 # **************************************************************************** #
 
-SRCS = \
-	./src/signals/signal.c \
-	./src/main.c \
-	./src/execution/binary_tree/binary_tree.c \
-	./src/execution/binary_tree/binary_tree_utils.c \
-	./src/execution/command_execution/operator_execution.c \
-	./src/execution/command_execution/command_execution.c \
-	./src/execution/command_execution/redirection_execution.c \
-	./src/execution/command_execution/pipeline_execution.c \
-	./src/commands/expansion/expansion.c \
-	./src/commands/creation/commands_redirection.c \
-	./src/commands/creation/commands_utils.c \
-	./src/commands/creation/commands_arguments.c \
-	./src/commands/creation/commands.c \
-	./src/parsing/tokenizer/token_attribution.c \
-	./src/parsing/tokenizer/tokenizer_utils.c \
-	./src/parsing/tokenizer/tokenizer.c \
-	./src/parsing/utils/print.c \
-	./src/parsing/utils/token.c \
-	./src/parsing/utils/quote.c \
-	./src/parsing/utils/other.c \
-	./src/parsing/utils/character.c \
-	./src/parsing/input.c \
-	./src/error/error.c \
-	./src/builtin/exit.c \
-	./src/builtin/pwd.c \
-	./src/builtin/cd.c \
-	./src/builtin/echo.c \
-	#./src/env/lstenv.c \
-	#./src/env/addenv.c \
-	#./src/env/environment.c \
-	#./src/builtin/export.c \
-	#./src/builtin/unset.c 
+SRCS = 																			\
+	./src/main.c																\
+	./src/shell/sub_system/error/error.c										\
+	./src/shell/sub_system/terminal/signal.c									\
+	./src/shell/sub_system/terminal/terminal.c									\
+	./src/shell/sub_system/terminal/cleaning.c									\
+	./src/shell/parsing/input.c													\
+	./src/shell/parsing/utils/quote.c											\
+	./src/shell/parsing/utils/token.c											\
+	./src/shell/parsing/utils/other.c											\
+	./src/shell/parsing/utils/character.c										\
+	./src/shell/parsing/tokenizer/tokenizer.c									\
+	./src/shell/parsing/tokenizer/tokenizer_utils.c								\
+	./src/shell/parsing/tokenizer/token_attribution.c							\
+	./src/shell/execution/commands/creation/commands.c							\
+	./src/shell/execution/commands/creation/commands_utils.c					\
+	./src/shell/execution/commands/creation/commands_arguments.c				\
+	./src/shell/execution/commands/creation/commands_redirection.c				\
+	./src/shell/execution/commands/expansion/expansion.c						\
+	./src/shell/execution/commands_execution/commands_execution.c				\
+	./src/shell/execution/commands_execution/operators_execution.c				\
+	./src/shell/execution/commands_execution/pipeline_execution.c				\
+	./src/shell/execution/commands_execution/redirections_execution.c			\
+	./src/shell/execution/commands_execution/binary_tree/binary_tree.c			\
+	./src/shell/execution/commands_execution/binary_tree/binary_tree_utils.c	\
+	./src/builtin/exit.c														\
+	./src/builtin/pwd.c															\
+	./src/builtin/cd.c															\
+	./src/builtin/echo.c														\
+	#./src/builtin/export.c														\
+	./src/builtin/unset.c														\
+	./src/shell/sub_system/env/lstenv.c											\
+	./src/shell/sub_system/env/addenv.c											\
+	./src/shell/sub_system/env/environment.c									\
+		./src/shell/parsing/utils/print.c										\
+
 HEADERS = \
-	./includes/env.h\
-	./includes/syntax.h\
-	./includes/minishell.h\
-	./includes/tokens.h\
-	./includes/binary_tree.h\
-	./includes/command.h\
+	./includes/minishell.h			\
+	./includes/sub_system/terminal.h\
+	./includes/parsing/parsing.h	\
+	./includes/parsing/tokens.h		\
+	./includes/execution/command.h	\
+	./includes/execution/execution.h \
 
 ###▲▲▲<src-updater-do-not-edit-or-remove>▲▲▲
 

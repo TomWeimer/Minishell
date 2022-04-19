@@ -1,21 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 18:11:14 by tweimer           #+#    #+#             */
-/*   Updated: 2022/04/18 19:52:02 by tweimer          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "minishell.h"
 
-#include "../../includes/command.h"
-#include "../../includes/minishell.h"
-
-char *new_buffer(t_command *cmd, int i, char *buffer, int option)
+char	*new_buffer(t_command *cmd, int i, char *buffer, int option)
 {
-	(void)option;
 	if (buffer == NULL)
 		buffer = ft_strdup(cmd->args[i]);
 	else
@@ -25,19 +11,17 @@ char *new_buffer(t_command *cmd, int i, char *buffer, int option)
 	else if (option == NO)
 		buffer = ft_strjoin_custom(buffer, "\n");
 	return (buffer);
-
 }
 
-void ft_echo(t_command *cmd)
+void	ft_echo(t_command *cmd)
 {
 	int		i;
 	int		option;
-	char 	*buffer;
+	char	*buffer;
 
 	i = FIRST_PARAM;
 	option = NO;
 	buffer = NULL;
-
 	while (cmd->args[i] != NULL)
 	{
 		if (ft_strcmp(cmd->args[i], OPTION_ECHO) == MATCH)
@@ -51,5 +35,4 @@ void ft_echo(t_command *cmd)
 	print_to_outfiles(buffer, cmd);
 	free(buffer);
 	buffer = NULL;
-	//
 }

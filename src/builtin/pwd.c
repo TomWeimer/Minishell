@@ -1,14 +1,11 @@
-
-#include "../../includes/command.h"
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_pwd(t_command *cmd)
 {
-	char *buffer;
-	(void)cmd;
+	char	*buffer;
+
 	buffer = getcwd(NULL, 0);
-	printf("%s\n", buffer);
-	//print_cmd(buffer, cmd);
+	print_to_outfiles(buffer, cmd);
 	free(buffer);
 	buffer = NULL;
 }

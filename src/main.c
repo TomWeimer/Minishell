@@ -1,12 +1,11 @@
-#include "../includes/minishell.h"
-#include "../includes/tokens.h"
-#include "../includes/syntax.h"
+#include "minishell.h"
+#include "execution/command.h"
 
-int manage_commands(t_group_token *all_tokens)//env
+int	manage_commands(t_group *all_tokens)
 {
-	t_command **all_commands;
+	t_command	**all_commands;
 
-	all_commands = shell_commands(all_tokens);//env
+	all_commands = shell_commands(all_tokens);
 	shell_execution(all_tokens, all_commands);
 	if (all_commands != NULL)
 	{
@@ -16,12 +15,12 @@ int manage_commands(t_group_token *all_tokens)//env
 	return (1);
 }
 
-void manage_tokens(char *input)//env
+void	manage_tokens(char *input)
 {
-	t_group_token *all_tokens;
+	t_group	*all_tokens;
 
 	all_tokens = tokenizer(input);
-	manage_commands(all_tokens);//env
+	manage_commands(all_tokens);
 	if (all_tokens != NULL)
 	{
 		clean_tokens(all_tokens);
@@ -30,35 +29,27 @@ void manage_tokens(char *input)//env
 	}
 }
 
-void manage_user_input(void)//env
+void	manage_user_input(void)
 {
-	char *input;
+	char	*input;
 
-	input = get_input();
-	manage_tokens(input);//env
+	input = get_user_input();
+	manage_tokens(input);
 	free(input);
 	input = NULL;
 }
 
-int main(int argc , char *argv[])
+int	main(int argc, char *argv[])
 {
-	char	*input;
-	t_terminal config;
-	int rc;
-
 	(void)argv;
-	if (argc > 1 || argc < 1)
-		return (0);
-	//create_env
-	rc = tcgetattr(STDIN_FILENO, &config);
-	config.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, rc, &config);
-	input = NULL;
-	block_signals_from_keyboard();
-	while (RUNNING)
+	if (argc == 1)
 	{
-		manage_user_input(/*env*/);
-	//	write(2, "\nnp\n", 4);
+		init_terminal();
+		while (RUNNING)
+		{
+			manage_user_input();
+		}
+		return (1);
 	}
-	return (1);
+	return (0);
 }

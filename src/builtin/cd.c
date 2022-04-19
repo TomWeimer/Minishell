@@ -1,11 +1,8 @@
-#include "../../includes/command.h"
-#include "../../includes/minishell.h"
-
-
+#include "minishell.h"
 
 void	ft_cd(t_command *cmd)
 {
-	int user_access;
+	int	user_access;
 
 	if (cmd->args[DIRECTORY] != NULL)
 	{
