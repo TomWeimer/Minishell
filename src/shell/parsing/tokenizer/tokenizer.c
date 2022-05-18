@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/18 15:18:22 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/18 15:18:23 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing/parsing.h"
 
 t_token	*init_token(char *input, int start)
@@ -76,6 +88,10 @@ t_group	*tokenizer(char *input)
 
 	all_tokens = init_all_tokens();
 	generate_tokens(input, all_tokens);
+	if (all_tokens != NULL && check_token_quote(all_tokens) == ERROR)
+	{
+		return (NULL);
+	}
 	token_attribution(all_tokens);
 	return (all_tokens);
 }

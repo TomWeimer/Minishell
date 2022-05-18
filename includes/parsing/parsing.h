@@ -22,6 +22,7 @@
 
 # define	OK		1
 # define	ERROR	0
+# define QUOTE_ERROR "The syntax is false the brackets aren't in par!\n"
 
 // prototypes:
 int				is_ifs(char c);
@@ -35,6 +36,7 @@ int				token_ended(char *input,int start_token, int i);
 int				find_next_start_token(char *input, int i, int token_type);
 int				token_attribution(t_group *token_group);
 void			add_new_token(t_token *new_token, t_group *all_token);
+int				check_token_quote(t_group *all_tokens);
 t_group	*init_all_tokens(void);
 
 #endif

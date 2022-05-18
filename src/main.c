@@ -20,7 +20,8 @@ void	manage_tokens(char *input)
 	t_group	*all_tokens;
 
 	all_tokens = tokenizer(input);
-	manage_commands(all_tokens);
+	if (all_tokens != NULL)
+		manage_commands(all_tokens);
 	if (all_tokens != NULL)
 	{
 		clean_tokens(all_tokens);
