@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <marvin@42lausanne.ch>             +#+  +:+       +#+        */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 11:07:36 by tweimer           #+#    #+#             */
-/*   Updated: 2021/10/24 12:25:51 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/05/22 17:55:01 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 static int	ft_gets_start(const char *s1, const char *set)

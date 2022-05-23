@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <marvin@42lausanne.ch>             +#+  +:+       +#+        */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:16:00 by tweimer           #+#    #+#             */
-/*   Updated: 2021/10/24 15:27:00 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/05/22 17:55:01 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 static unsigned int	ft_len(unsigned int len, unsigned int size)

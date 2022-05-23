@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_tabchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:44:08 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/22 17:55:01 by tweimer          ###   ########.fr       */
+/*   Created: 2022/04/11 14:26:39 by tchappui          #+#    #+#             */
+/*   Updated: 2022/04/11 14:27:09 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_tolower(int c)
+int	ft_tabchr(char **str, char c)
 {
-	int	d;
+	int	i;
+	int	j;
 
-	d = c;
-	if (c >= 'A' && c <= 'Z')
-		d = c + 32;
-	return (d);
+	i = 0;
+	while (str[++i] != NULL)
+	{
+		j = 0;
+		while(str[i][j])
+		{
+			if (str[i][j] == c)
+				return (1);
+			j++;
+		}
+	}
+	return (0);
 }

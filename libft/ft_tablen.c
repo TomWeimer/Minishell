@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_tablen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:44:08 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/22 17:55:01 by tweimer          ###   ########.fr       */
+/*   Created: 2022/03/03 14:17:15 by tchappui          #+#    #+#             */
+/*   Updated: 2022/03/03 14:23:47 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_tolower(int c)
+int	ft_tablen(char **s)
 {
-	int	d;
+	int	i;
 
-	d = c;
-	if (c >= 'A' && c <= 'Z')
-		d = c + 32;
-	return (d);
+	i = 0;
+	while(s[i])
+		i++;
+	return (i);
 }

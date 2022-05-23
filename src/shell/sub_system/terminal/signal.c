@@ -1,37 +1,39 @@
 #include "sub_system/terminal.h"
-
-void	signal_handler(int signal)
+# include "minishell.h"
+void new_prompt(int sig)
 {
-	if (signal == SIGINT)
+	(void)sig;
+	g_print = 130;
+	write(1, "\n", 1);
+	rl_replace_line("", 1);
+	rl_on_new_line();
+	rl_redisplay();
+
+}
+
+void no_prompt(int sig)
+{
+	(void)sig;
+	g_print = 130;
+	write(1, "\0", 1);
+}
+
+void exit_minishell(int sig)
+{
+	(void)sig;
+	exit(EXIT_SUCCESS);
+}
+
+void handler_child(int sig)
+{
+	if (sig == SIGINT)
 	{
-		rl_on_new_line();
-		write(2, "\n", 1);
-		rl_replace_line("", 1);
-		rl_redisplay();
+		exit(0);
 	}
-	else if (signal == SIGTERM)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
-		exit(EXIT_SUCCESS);
-	}
-	else if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
-		return ;
-	}
-	return ;
 }
 
 void	block_signals_from_keyboard(void)
 {
-	t_sigaction	sa;
-
-	sa.sa_handler = &signal_handler;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTERM, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGINT, new_prompt);
+	signal(SIGQUIT, SIG_IGN);
 }

@@ -1,5 +1,5 @@
 #include "execution/execution.h"
-
+# include "minishell.h"
 void	redirect_input(int *fd)
 {
 	close(fd[1]);
@@ -58,26 +58,27 @@ void	manage_output(t_tree *main_pipe, t_tree *sub_node, int side)
 	}
 }
 
-void	child(t_tree *main_pipe, t_tree *sub_node, int side)
+void	child(t_tree *main_pipe, t_tree *sub_node, int side, t_env *env)
 {
+	signal(SIGINT, no_prompt);
 	if (side == LEFT)
 	{
 		manage_input(main_pipe, sub_node, side);
 		manage_output(main_pipe, sub_node, side);
-		execute_cmd(sub_node);
+		execute_cmd(sub_node, env, PIPE);
 	}
 	else if (side == RIGHT)
 	{
 		if (sub_node->token != NULL)
 		{
-			manage_node_execution(sub_node);
+			manage_node_execution(sub_node, env);
 		}
 		else
 		{
 			manage_input(main_pipe, sub_node, side);
 			manage_output(main_pipe, sub_node, side);
-			execute_cmd(sub_node);
+			execute_cmd(sub_node, env, PIPE);
 		}
 	}
-	return ;
+	exit(0);
 }

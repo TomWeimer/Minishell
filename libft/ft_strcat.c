@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 16:44:08 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/22 17:55:01 by tweimer          ###   ########.fr       */
+/*   Created: 2022/04/13 13:10:40 by tchappui          #+#    #+#             */
+/*   Updated: 2022/05/22 20:20:46 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_tolower(int c)
+char	*ft_strcat(char *dest, char *src)
 {
-	int	d;
+	int	i;
+	int	j;
 
-	d = c;
-	if (c >= 'A' && c <= 'Z')
-		d = c + 32;
-	return (d);
+	i = 0;
+	j = 0;
+	while (dest[i] != 0)
+		i++;
+	while (src[j] != 0)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = 0;
+	return (dest);
 }

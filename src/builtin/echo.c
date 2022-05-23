@@ -32,7 +32,9 @@ void	ft_echo(t_command *cmd)
 		}
 		i++;
 	}
-	print_to_outfiles(buffer, cmd);
+	if (buffer == NULL && option == NO)
+		buffer = ft_strdup("\n");
+	write(1, buffer, ft_strlen(buffer));
 	free(buffer);
 	buffer = NULL;
 }

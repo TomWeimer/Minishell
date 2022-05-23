@@ -1,6 +1,17 @@
-#include "../../includes/env.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lstenv.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/19 18:19:12 by tchappui          #+#    #+#             */
+/*   Updated: 2022/05/22 21:42:07 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "environment/env.h"
 #include <stdlib.h>
-//#include "../../includes/minishell.h"
 
 t_list	*ft_lstnew(char *content)
 {
@@ -23,7 +34,7 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-int ft_lstsize(t_list *lst)
+int	ft_lstsize(t_list *lst)
 {
 	int	i;
 
@@ -31,23 +42,23 @@ int ft_lstsize(t_list *lst)
 	if (!lst)
 		return (0);
 	while (lst->next != NULL)
-		{
-			lst = lst->next;
-			i++;
-		}
+	{
+		lst = lst->next;
+		i++;
+	}
 	return (i);
 }
 
-void ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*end_lst;
 
 	if (new)
 	{
-		if(!*lst)
+		if (!*lst)
 		{
 			*lst = new;
-			return;	
+			return ;
 		}
 		end_lst = ft_lstlast(*lst);
 		end_lst->next = new;
@@ -72,6 +83,18 @@ void	printlst(t_list *lst)
 	while (lst != NULL)
 	{
 		printf("%s\n", lst->content);
+		lst = lst->next;
+	}
+}
+
+void	printenv(t_command *cmd, t_env *env, t_list *lst)
+{
+	(void)cmd;
+	ft_addenv(env, env->list, "_=/Users/bin/env");
+	while (lst != NULL)
+	{
+		write(1,lst->content, ft_strlen(lst->content));
+		write(1, "\n", 1);
 		lst = lst->next;
 	}
 }

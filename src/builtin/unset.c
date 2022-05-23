@@ -1,6 +1,5 @@
-#include "../../includes/env.h"
+#include "environment/env.h"
 #include <stdlib.h>
-//#include "../../includes/minishell.h"
 
 void	ft_envfree(t_list *env, char *args)
 {
@@ -9,8 +8,6 @@ void	ft_envfree(t_list *env, char *args)
 
 	i = 0;
 	lastenv = env;
-	while (args[i] != 0)
-		i++;
 	args = ft_strcat(args, "=");
 	i = 0;
 	while (env != NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 12:20:09 by tweimer           #+#    #+#             */
-/*   Updated: 2022/04/08 18:37:00 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/04/26 12:17:17 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,12 @@ void	ft_putendl_fd(char *s, int fd);
 
 void	ft_putnbr_fd(int n, int fd);
 
+char	*ft_strcat(char *dest, char *src);
+
+int	ft_strdcmp(char *s1, char *s2, char d);
+
+int	ft_tablen(char **s);
+
+int	ft_tabchr(char **str, char c);
 
 #endif

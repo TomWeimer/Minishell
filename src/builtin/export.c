@@ -1,6 +1,6 @@
-#include "../../includes/env.h"
+#include "environment/env.h"
+#include "execution/execution.h"
 #include <stdlib.h>
-//#include "../../includes/minishell.h"
 
 void	addexport(t_list *list, char *str)
 {
@@ -78,12 +78,12 @@ void	printexport(char *str)
 	write(1, "\n", 1);
 }
 
-void	ft_export(t_env *env, t_list *list, char **args)
+void	ft_export(t_env *env, t_list *list, t_command *cmd)
 {
 	int	i;
 
 	i = 0;
-	if (ft_tablen(args) == 1)
+	if (ft_tablen(cmd->args) == 1)
 	{
 		while (list != NULL)
 		{
@@ -94,12 +94,12 @@ void	ft_export(t_env *env, t_list *list, char **args)
 	}
 	else
 	{
-		while (args[++i] != NULL)
+		while (cmd->args[++i] != NULL)
 		{
-			if (ft_strchr(args[i], 61) != NULL)
-				addexport(env->list, args[i]);
+			if (ft_strchr(cmd->args[i], 61) != NULL)
+				addexport(env->list, cmd->args[i]);
 			else
-				add_export(args[i], env);
+				add_export(cmd->args[i], env);
 		}
 	}
 }

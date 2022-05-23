@@ -14,9 +14,10 @@ LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
 ##		COMPILATION			##
 CC := gcc
-READLIB :=  -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
+READLIB := -lreadline -L $(HOME)/.brew/opt/readline/lib
+# -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
 LIBRAIRIES := -lft -L$(LIBFT_DIRECTORY) $(READLIB)
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror #-g3 -fsanitize=address
 
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)
@@ -36,7 +37,8 @@ SUBDIR	:=	src													\
 			src/shell/execution/commands_execution				\
 			src/shell/execution/commands_execution/binary_tree	\
 			src/builtin											\
-			#src/shell/sub_system/env							
+			src/shell/sub_system/env							\
+			src/shell/sub_system/wildcard						\
 
 
 RED		= \033[1;31m
@@ -80,12 +82,14 @@ SRCS = 																			\
 	./src/builtin/pwd.c															\
 	./src/builtin/cd.c															\
 	./src/builtin/echo.c														\
-	#./src/builtin/export.c														\
-	./src/builtin/unset.c														\
 	./src/shell/sub_system/env/lstenv.c											\
 	./src/shell/sub_system/env/addenv.c											\
 	./src/shell/sub_system/env/environment.c									\
-		./src/shell/parsing/utils/print.c										\
+	./src/builtin/export.c														\
+	./src/builtin/unset.c														\
+	./src/shell/sub_system/wildcard/wildcard.c									\
+	./src/shell/execution/commands_execution/execution_base.c					\
+	#./src/shell/parsing/utils/print.c											\
 
 HEADERS = \
 	./includes/minishell.h			\
@@ -116,7 +120,7 @@ $(LIBFT):
 $(NAME): $(LIBFT) $(SRCS) $(OBJS)
 		@printf "$(YEL)\n------------Compiled----------------\n$(RESET)"
 		@printf "$(RESET)$(CC) $(CFLAGS)\n"
-		@$(CC) $(CFLAGS)  $(OBJS) -o $(NAME) $(LIBRAIRIES)
+		@$(CC) $(CFLAGS)  $(OBJS) -o $(NAME) $(LIBRAIRIES) $(LIBFT)
 		@printf "$(YEL)------------Linked------------------\n$(RESET)"
 		@printf " $(READLIB) $(RESET)\n"
 		@printf "$(GREEN)$(NAME) sucessfully created ! $(RESET)\n"
@@ -131,6 +135,10 @@ fclean: clean
 		
 
 re: fclean all
+
+lldb:
+	$(CC) -g $(SRCS) $(CFLAGS) -o $(NAME) $(LIBRAIRIES) $(LIBFT)
+	lldb $(NAME)
 
 run: $(NAME)
 		./$(NAME)
