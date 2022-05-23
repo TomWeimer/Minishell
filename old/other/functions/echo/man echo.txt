@@ -1,2 +1,0 @@
-gerer une string
-gerer des variables 
