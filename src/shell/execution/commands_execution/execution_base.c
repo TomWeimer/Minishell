@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 14:54:19 by tchappui          #+#    #+#             */
-/*   Updated: 2022/05/23 11:42:46 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/05/24 18:22:09 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int pipe_base_builtin(t_tree *node, t_env *env)
 		if (out == 0)
 		{
 			signal(SIGINT, handler_child);
-			if (execve(cmd, node->cmd->args, g_envp) == -1) // si reussi quitte le process
+			if (execve(cmd, node->cmd->args, NULL) == -1) // si reussi quitte le process
 			{
 				if (cmd != NULL)
 					free (cmd);

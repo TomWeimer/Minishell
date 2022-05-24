@@ -41,9 +41,9 @@ int	redirection_files(t_command *cmd)
 	}
 	else if (last->type == MORE)
 	{
-		last->fd = open(last->file_name, O_WRONLY | O_CREAT, S_IWUSR | S_IRUSR);
+		last->fd = open(last->file_name, O_RDWR | O_CREAT | O_TRUNC, 644);
 	}
-	return (1);
+	return (last->fd);
 }
 
 void	exec_here_doc(char *key)

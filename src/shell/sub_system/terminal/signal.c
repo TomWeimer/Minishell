@@ -3,7 +3,6 @@
 void new_prompt(int sig)
 {
 	(void)sig;
-	g_print = 130;
 	write(1, "\n", 1);
 	rl_replace_line("", 1);
 	rl_on_new_line();
@@ -14,7 +13,6 @@ void new_prompt(int sig)
 void no_prompt(int sig)
 {
 	(void)sig;
-	g_print = 130;
 	write(1, "\0", 1);
 }
 

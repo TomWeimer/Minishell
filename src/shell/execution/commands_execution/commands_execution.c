@@ -149,6 +149,7 @@ int	execute_cmd(t_tree *node, t_env *env, int type)
 		execute_builtin(node, ok, env);
 		node->cmd->status = 1;
 	}
+	dup2(g_data.stdout_fd, STDOUT_FILENO);
 	return (1);
 }
 /* 

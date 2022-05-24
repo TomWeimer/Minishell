@@ -17,8 +17,14 @@
 
 
 // define:
-int g_print;
-char **g_envp;
+struct s_data
+{
+	int				exit_status;
+	pid_t			pid;
+	int				stdin_fd;
+	int				stdout_fd;
+}g_data;
+
 # define RUNNING 1
 
 // prototypes:
@@ -34,4 +40,6 @@ t_command		**shell_commands(t_group *all_tokens);
 void 			shell_execution(t_group *all_token, t_command **all_command, t_env *env);
 void 			clean_tokens(t_group *all_token);
 void			clean_commands(t_command **all_commands);
+
+
 #endif

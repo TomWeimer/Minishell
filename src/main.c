@@ -2,9 +2,6 @@
 #include "execution/command.h"
 #include "environment/env.h"
 
-int		g_print = 100;
-char	**g_envp = NULL;
-
 
 int	manage_commands(t_group *all_tokens, t_env *env)
 {
@@ -55,7 +52,6 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		env.list = NULL;
 		env.temp = NULL;
-		g_envp = envp;
 		ft_env(&env.list, envp);
 		init_terminal();
 		while (RUNNING)
