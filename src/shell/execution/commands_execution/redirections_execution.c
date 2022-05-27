@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections_execution.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:46:21 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 15:52:11 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/execution.h"
 
 void	replace_input(t_command *cmd)
@@ -6,14 +18,25 @@ void	replace_input(t_command *cmd)
 
 	if (cmd->input == NULL)
 		return ;
+	//write(2, "Enter_INPUT\n", 12);
 	actual = cmd->input;
-	while (actual->next != NULL)
+	while (actual != NULL)
 	{
 		if (actual->type == LESS)
 		{
-			actual->fd = open(actual->file_name, O_RDONLY);
+			actual->fd = open(actual->file_name, O_RDONLY );
 			dup2(actual->fd, STDIN_FILENO);
 			close(actual->fd);
+		}
+		else if (actual->type == DLESS)
+		{
+			//write(2, "Enter_HERE_DOC\n", 15);
+			actual->fd = execute_here_doc(actual->content);
+			close(actual->fd);
+			actual->fd = open(TMP_FILE, O_RDONLY );
+			dup2(actual->fd, STDIN_FILENO);
+			close(actual->fd);
+			unlink(TMP_FILE);
 		}
 		actual = actual->next;
 	}
@@ -41,59 +64,31 @@ int	redirection_files(t_command *cmd)
 	}
 	else if (last->type == MORE)
 	{
-		last->fd = open(last->file_name, O_RDWR | O_CREAT | O_TRUNC, 644);
+		last->fd = open(last->file_name, O_RDWR | O_TRUNC | O_CREAT, S_IWUSR | S_IRUSR);
 	}
 	return (last->fd);
 }
 
-void	exec_here_doc(char *key)
+void output_redirection(t_command *cmd)
 {
-	char	*str;
-
-	str = NULL;
-	while (ft_strcmp(key, str) != 0)
+	int fd;
+	
+	if (cmd->output == NULL)
+		return ;
+	//write(2, "Enter\n", 6);
+	fd = redirection_files(cmd);
+	if (fd >= 0)
 	{
-		if (str != NULL)
-		{
-			free(str);
-			str = NULL;
-		}
-		str = readline("heredoc> ");
-	}
-	if (str != NULL)
-	{
-		free(str);
-		str = NULL;
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 }
 
-void	here_doc(t_command *cmd)
+void input_redirection(t_command *cmd)
 {
-	t_redirection	*actual;
-
+	
 	if (cmd->input == NULL)
 		return ;
-	actual = cmd->input;
-	while (actual != NULL)
-	{
-		if (actual->type == DLESS)
-		{
-			exec_here_doc(actual->file_name);
-		}
-		actual = actual->next;
-	}
-}
-
-void	manage_here_doc(t_command **all_commands)
-{
-	int	i;
-
-	i = 0;
-	if (all_commands == NULL)
-		return ;
-	while (all_commands[i] != NULL)
-	{
-		here_doc(all_commands[i]);
-		i++;
-	}
+	//write(2, "Enter\n", 6);
+	replace_input(cmd);
 }

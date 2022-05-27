@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:47:25 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 13:48:10 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "environment/env.h"
 
-void	newpwd(t_env *env) //met a jour la var d'env pwd
+void	newpwd(t_env *env)
 {
 	char	*newpwd;
 	char	*buffer;
@@ -15,7 +27,7 @@ void	newpwd(t_env *env) //met a jour la var d'env pwd
 	buffer = NULL;
 }
 
-void	oldpwd(t_env *env) //met a jour la var d'env oldpwd
+void	oldpwd(t_env *env)
 {
 	char	*newpwd;
 	t_list	*oldpwd;

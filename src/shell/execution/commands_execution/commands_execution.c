@@ -1,75 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands_execution.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:46:52 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 14:11:32 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/execution.h"
 #include "environment/env.h"
-
-int	ft_checkequal(char **args, t_env *env) // changer de places
-{
-	int	i;
-
-	i = -1;
-	while (args[++i] != NULL)
-	{
-		if (ft_strchr(args[i], '=') != NULL)
-			ft_addenv(env, env->list, args[i]);
-		else
-			return (0);
-	}
-	return (9);
-}
-
-void	print_to_outfiles(char *str, t_command *cmd)
-{
-	t_redirection	*actual;
-	t_redirection	*last;
-
-	last = NULL;
-	actual = NULL;
-	if (str == NULL)
-		return ;
-	if (cmd->output != NULL)
-	{
-		redirection_files(cmd);
-		actual = cmd->output;
-		while (actual != NULL)
-		{
-			last = actual;
-			actual = actual->next;
-		}
-		ft_putstr_fd(str, last->fd);
-	}
-	if (cmd->output != NULL)
-		close(last->fd);
-	else if (cmd->args != NULL)
-		ft_putstr_fd(str, STDOUT_FILENO);
-}
-
-int	is_builtin(char *str)
-{
-	char	**builtin;
-	int		i;
-
-	i = -1;
-	builtin = malloc ((7 + 1) * sizeof(char *));
-	builtin[0] = "echo";
-	builtin[1] = "cd";
-	builtin[2] = "pwd";
-	builtin[3] = "exit";
-	builtin[4] = "export";
-	builtin[5] = "unset";
-	builtin[6] = "env";
-	builtin[7] = NULL;
-	while (builtin[++i])
-	{
-		if (ft_strcmp(str, builtin[i]) == 0)
-		{
-			free(builtin);
-			builtin = NULL;
-			return (i + 1);
-		}
-	}
-	free(builtin);
-	builtin = NULL;
-	return (0);
-}
 
 void	execute_builtin(t_tree *node, int ok, t_env *env)
 {
@@ -91,43 +33,8 @@ void	execute_builtin(t_tree *node, int ok, t_env *env)
 	ft_lastcmd(ok, env);
 }
 
-void input_redirection(t_command *cmd)
+int execute_not_builtin(t_tree *node, t_env *env, int type, int ok)
 {
-	if (cmd->input == NULL)
-		return ;
-	replace_input(cmd);
-}
-
-void output_redirection(t_command *cmd)
-{
-	int fd;
-
-	if (cmd->output == NULL)
-		return ;
-	fd = redirection_files(cmd);
-	if (fd >= 0)
-	{
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-}
-
-int	execute_cmd(t_tree *node, t_env *env, int type)
-{
-	int	ok;
-	ok = 0;
-	ft_wildcard(node->cmd);
-	ok = ft_checkequal(node->cmd->args, env);
-	if (ft_tabchr(node->cmd->args, '$') == 1)
-		node->cmd->args = ft_remplaceargs(node->cmd->args, env);
-	if (node->cmd->args == NULL)
-		return (1);
-	// DELIMITATION 1
-	input_redirection(node->cmd);
-	output_redirection(node->cmd);
-	ok = is_builtin(node->cmd->args[0]);
-	if (ok <= 0)
-	{	
 		if (type != PIPE)
 			ok = base_builtin(node->cmd->args, env);
 		else
@@ -135,57 +42,53 @@ int	execute_cmd(t_tree *node, t_env *env, int type)
 		if (ok == YES) // base builtin executer
 		{
 			node->cmd->status = 1;
+			dup2(g_data.stdin_fd, STDIN_FILENO);
+			dup2(g_data.stdout_fd, STDOUT_FILENO);
 			return (1);
 		}
 		else
 		{
-				node->cmd->status = 0;
+			node->cmd->status = 0;
+			dup2(g_data.stdin_fd, STDIN_FILENO);
+			dup2(g_data.stdout_fd, STDOUT_FILENO);
 			return (0);
 		}
-	}
-	// DELIMITATION 2
-	else
-	{
-		execute_builtin(node, ok, env);
-		node->cmd->status = 1;
-	}
-	dup2(g_data.stdout_fd, STDOUT_FILENO);
-	return (1);
 }
-/* 
-int	execute_cmd(t_tree *node, t_env *env)
+
+
+
+int	execute_cmd(t_tree *node, t_env *env, int type)
 {
 	int	ok;
-
 	ok = 0;
+
+	if (node->cmd->args == NULL)
+		return (1);
 	ft_wildcard(node->cmd);
 	ok = ft_checkequal(node->cmd->args, env);
 	if (ft_tabchr(node->cmd->args, '$') == 1)
 		node->cmd->args = ft_remplaceargs(node->cmd->args, env);
-	if (node->cmd->args != NULL)
-		ok = is_builtin(node->cmd->args[0]);
-	if (ok <= 0)
-		ok = base_builtin(node->cmd->args, env);
+	input_redirection(node->cmd);
+	output_redirection(node->cmd);
+	ok = is_builtin(node->cmd->args[0]);
 	if (ok <= 0)
 	{
-		replace_input(node->cmd);
-		redirection_files(node->cmd);
-		node->cmd->status = 0;
-		return (0);
+		return (execute_not_builtin(node, env, type, ok));
 	}
 	else
 	{
 		execute_builtin(node, ok, env);
 		node->cmd->status = 1;
+		dup2(g_data.stdout_fd, STDOUT_FILENO);
+		dup2(g_data.stdin_fd, STDIN_FILENO);
+		return (1);
 	}
-	return (1);
 }
- */
+
 void	shell_execution(t_group *all_token, t_command **all_command, t_env *env)
 {
 	t_tree	*root;
 
-	manage_here_doc(all_command);
 	root = binary_tree(all_token, all_command);
 	manage_node_execution(root, env);
 	clean_tree(root);

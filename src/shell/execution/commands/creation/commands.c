@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:45:38 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 15:22:34 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/execution.h"
 
 t_command	*new_command(t_token *actual_token)
@@ -44,6 +56,8 @@ t_command	**create_commands(t_group *token_group)
 		i++;
 	}
 	all_commands[i] = NULL;
+
+	handle_here_doc(all_commands);
 	return (all_commands);
 }
 

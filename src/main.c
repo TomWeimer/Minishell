@@ -8,6 +8,7 @@ int	manage_commands(t_group *all_tokens, t_env *env)
 	t_command	**all_commands;
 
 	all_commands = shell_commands(all_tokens);
+	signal(SIGCHLD, reap_child);
 	shell_execution(all_tokens, all_commands, env);
 	if (all_commands != NULL)
 	{

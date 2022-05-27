@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   operators_execution.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:46:34 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 16:10:15 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/execution.h"
 
 int	pipe_behaviour(t_tree *node, t_env *env)
 {
 	int	pid[2];
-	int	status[2];
+	int	status;
 
 	node->fd = malloc(sizeof(int) * 2);
 	pipe(node->fd);
@@ -16,7 +28,8 @@ int	pipe_behaviour(t_tree *node, t_env *env)
 	}
 	else 
 	{
-		waitpid(pid[0], &status[0], 0);
+		g_data.last_pid = pid[0];
+		//waitpid(-1,0, 0);
         close(node->fd[1]);
 	}
 	pid[1] = fork();
@@ -25,7 +38,8 @@ int	pipe_behaviour(t_tree *node, t_env *env)
 		child(node, node->right, RIGHT, env);
 		exit(1);
 	}
-	waitpid(pid[1], &status[1], 0);
+	g_data.last_pid = pid[1];
+	waitpid(g_data.last_pid, &status, 0);
 	close(node->fd[0]);
 	close(node->fd[1]);
 	signal(SIGINT, new_prompt);

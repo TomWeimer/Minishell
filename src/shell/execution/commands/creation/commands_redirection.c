@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands_redirection.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:45:22 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 15:47:33 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/execution.h"
 
 t_redirection	*init_redirection(void)
@@ -13,6 +25,7 @@ t_redirection	*init_redirection(void)
 	new->fd = 0;
 	new->file_name = NULL;
 	new->next = NULL;
+	new->content = NULL;
 	return (new);
 }
 

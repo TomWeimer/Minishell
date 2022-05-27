@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleaning.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:44:06 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 15:50:41 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution/binary_tree.h"
 
 void	clean_tree(t_tree *node)
@@ -23,6 +35,8 @@ void	clean_cmd_redirection(t_redirection *first)
 		actual = actual->next;
 		if (to_delete->file_name != NULL)
 			free(to_delete->file_name);
+		if (to_delete->content != NULL)
+			free(to_delete->content);
 		free(to_delete);
 	}
 }

@@ -14,7 +14,8 @@ LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
 ##		COMPILATION			##
 CC := gcc
-READLIB := -lreadline -L $(HOME)/.brew/opt/readline/lib
+READLIB := -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
+# -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
 LIBRAIRIES := -lft -L$(LIBFT_DIRECTORY) $(READLIB)
 CFLAGS := -Wall -Wextra -Werror #-g3 -fsanitize=address
@@ -72,6 +73,7 @@ SRCS = 																			\
 	./src/shell/execution/commands/creation/commands_arguments.c				\
 	./src/shell/execution/commands/creation/commands_redirection.c				\
 	./src/shell/execution/commands/expansion/expansion.c						\
+	./src/shell/execution/commands_execution/here_doc.c							\
 	./src/shell/execution/commands_execution/commands_execution.c				\
 	./src/shell/execution/commands_execution/operators_execution.c				\
 	./src/shell/execution/commands_execution/pipeline_execution.c				\

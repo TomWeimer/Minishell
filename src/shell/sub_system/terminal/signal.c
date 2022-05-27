@@ -1,5 +1,18 @@
-#include "sub_system/terminal.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/27 13:44:14 by tweimer           #+#    #+#             */
+/*   Updated: 2022/05/27 13:44:19 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+# include "sub_system/terminal.h"
 # include "minishell.h"
+
 void new_prompt(int sig)
 {
 	(void)sig;
@@ -8,6 +21,20 @@ void new_prompt(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 
+}
+void reap_child(int sig)
+{
+	(void)sig;
+    int status;
+    waitpid(-1, &status, WNOHANG);
+}
+
+void	signal_here_document(int signal)
+{
+	(void)signal;
+	g_data.exit_status = 130;
+	write(1, "\n", 1);
+	exit(130);
 }
 
 void no_prompt(int sig)
