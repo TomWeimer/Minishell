@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:45:22 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 15:47:33 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/07 14:22:53 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_redirection	*init_redirection(void)
 	new = malloc(sizeof(t_redirection));
 	if (new == NULL)
 	{
-		write_error(NULL, NULL);
+		write_error(NULL, NULL, NULL);
 		exit(EXIT_FAILURE);
 	}
 	new->fd = 0;
@@ -73,6 +73,8 @@ void	add_output(t_command *cmd, t_token *actual_token)
 		cmd->output = new;
 }
 
+//	loop around the token and if a token is a redirection
+//	add them in either of new_cmd->input or new_cmd->output
 void	create_redirection(t_token *actual, t_command *new_cmd)
 {
 	while (actual != NULL && token_is_operator(actual->type) == NO)

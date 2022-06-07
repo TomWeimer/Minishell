@@ -6,95 +6,25 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 14:54:19 by tchappui          #+#    #+#             */
-/*   Updated: 2022/05/27 13:10:53 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/07 14:52:39 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment/env.h"
 #include "execution/execution.h"
+#include "sub_system/terminal.h"
 #include <string.h>
 
-void no_prompt(int sig);
-void new_prompt(int sig);
-static char	*find_path3(t_list *list)
+char	**env_tab(t_env *env)
 {
-	char	*rtn;
-	int		i; 
-
-	i = 0;
-	while (list != NULL)
-	{
-		if (ft_strncmp(list->content, "PATH=", 5) == 0)
-			break ;
-		list = list->next;
-		i++;
-	}
-	rtn = ft_substr(list->content, 5, ft_strlen(list->content) - 5);
-	return (rtn);
-}
-
-static char	**find_path2(t_list *list)
-{
-	char	*arg;
-	char	**path;
+	t_list	*actual;
+	char	**envp;
 	int		i;
 
-	arg = NULL;
-	arg = find_path3(list);
-	path = ft_split(arg, ':');
-	free(arg);
 	i = 0;
-	while (path[i] != NULL)
-	{
-		arg = ft_strdup(path[i]);
-		free(path[i]);
-		path[i] = NULL;
-		path[i] = ft_strjoin(arg, "/");
-		free(arg);
-		i++;
-	}
-	return (path);
-}
-
-static char	*find_path(t_list *list, char *arg)
-{
-	char	*cmd;
-	char	**path;
-	int		i;
-
-	if (access(arg, F_OK) != -1)
-	{
-		if (ft_strncmp(arg, "./", 2) == 0)
-			return (arg);
-		return (NULL);
-	}
-	i = 0;
-	path = find_path2(list);
-	while (path[i] != 0)
-	{
-		cmd = ft_strjoin(path[i], arg);
-		if (access(cmd, F_OK) == -1)
-		{
-			free(cmd);
-			cmd = NULL;
-			i++;
-		}
-		else
-			return (cmd);
-	}
-	return (NULL);
-}
-
-char **env_tab(t_env *env)
-{
-	t_list *actual;
-	char **envp;
-	int i;
-
-	i = 0;
-	envp = malloc(sizeof(char *) * (env->envsize + 1));
+	envp = malloc(sizeof(char *) * (ft_lstlen(env->list)));
 	actual = env->list;
-	while (actual->next != NULL)
+	while (actual != NULL)
 	{
 		envp[i] = ft_strdup(actual->content);
 		actual = actual->next;
@@ -103,87 +33,62 @@ char **env_tab(t_env *env)
 	return (envp);
 }
 
-int pipe_base_builtin(t_tree *node, t_env *env)
+int	pipe_base_builtin(t_tree *node)
 {
 	char	*cmd;
 	pid_t	out;
 	int		status;
+	char	**envp;
 
-	cmd = NULL;
-	cmd = find_path(env->list, node->cmd->args[0]);
-	if (cmd != NULL) // && n'est pas un pipe
+	cmd = find_path(g_data.env->list, node->cmd->args[0]);
+	if (cmd != NULL)
 	{
 		out = fork();
-	 // creer un nouveau process
+		exec_signals();
+		envp = env_tab(g_data.env);
 		if (out == 0)
-		{
-			signal(SIGINT, handler_child);
-			if (execve(cmd, node->cmd->args, NULL) == -1) // si reussi quitte le process
-			{
-				if (cmd != NULL)
-					free (cmd);
-				cmd = NULL;
-				exit(1);
-			}
-			exit(0);
-		}
-		else
-		{
-			signal(SIGINT, no_prompt);
-			waitpid(out, &status, 0);
-			signal(SIGINT, new_prompt);
-			free (cmd);
-			cmd = NULL;
-			return (0);
-		}
+			execve(cmd, node->cmd->args, envp);
+		waitpid(out, &status, 0);
+		if (WIFEXITED(status))
+			g_data.exit_status = WEXITSTATUS(status);
 	}
 	else
 	{
-		printf("Minishell: %s: command not found\n", node->cmd->args[0]);
-		return (0);
+		write_error(node->cmd->args[0], "Minishel: ", CMD_NOT_FOUND);
+		return (1);
 	}
+	free(cmd);
+	block_signals_from_keyboard();
 	return (0);
 }
 
-int	base_builtin(char **str, t_env *env) //execute les commande de base
+//	We create a new process, and execute the commands with
+//	execve
+int	base_builtin(char **str)
 {
 	char	*cmd;
 	pid_t	out;
 	int		status;
+	char	**env;
 
-	cmd = NULL;
-	cmd = find_path(env->list, str[0]);
-	if (cmd != NULL) // && n'est pas un pipe
+	cmd = find_path(g_data.env->list, str[0]);
+	if (cmd != NULL && str[0][0] != '\0')
 	{
 		out = fork();
-	 // creer un nouveau process
+		exec_signals();
+		env = env_tab(g_data.env);
 		if (out == 0)
-		{
-			signal(SIGINT, handler_child);
-			if (execve(cmd, str, NULL) == -1) // si reussi quitte le process
-			{
-				if (cmd != NULL)
-					free (cmd);
-				cmd = NULL;
-				exit(1);
-			}
-			exit(0);
-		}
-		else
-		{
-			signal(SIGINT, no_prompt);
-			waitpid(out, &status, 0);
-			
-			signal(SIGINT, new_prompt);
-			free (cmd);
-			cmd = NULL;
-			return (0);
-		}
+			execve(cmd, str, env);
+		waitpid(out, &status, 0);
+		if (WIFEXITED(status))
+			g_data.exit_status = WEXITSTATUS(status);
 	}
 	else
 	{
-		printf("Minishell: %s: command not found\n", str[0]);
-		return (0);
+		write_error(str[0], "Minishel: ", CMD_NOT_FOUND);
+		return (1);
 	}
+	free(cmd);
+	block_signals_from_keyboard();
 	return (0);
 }

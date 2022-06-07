@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstenv.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 18:19:12 by tchappui          #+#    #+#             */
-/*   Updated: 2022/05/22 21:42:07 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/05 21:40:17 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,4 @@ t_list	*ft_lstreplace(t_list *lst, char *content)
 	new->content = ft_strdup(content);
 	free(lst);
 	return (new);
-}
-
-void	printlst(t_list *lst)
-{
-	while (lst != NULL)
-	{
-		printf("%s\n", lst->content);
-		lst = lst->next;
-	}
-}
-
-void	printenv(t_command *cmd, t_env *env, t_list *lst)
-{
-	(void)cmd;
-	ft_addenv(env, env->list, "_=/Users/bin/env");
-	while (lst != NULL)
-	{
-		write(1,lst->content, ft_strlen(lst->content));
-		write(1, "\n", 1);
-		lst = lst->next;
-	}
 }

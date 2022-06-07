@@ -6,30 +6,29 @@
 /*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 18:18:46 by tchappui          #+#    #+#             */
-/*   Updated: 2022/05/19 18:18:51 by tchappui         ###   ########.fr       */
+/*   Updated: 2022/06/05 21:34:49 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment/env.h"
 #include "execution/execution.h"
-#include <stdlib.h>
 
-void	ft_lastcmd(int ok, t_env *env)
+void	ft_lastcmd(int ok)
 {
 	if (ok == CMD_ECHO)
-		ft_addenv(env, env->list, "_=/Users/bin/echo");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/echo");
 	else if (ok == CMD_CD)
-		ft_addenv(env, env->list, "_=/Users/bin/cd");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/cd");
 	else if (ok == CMD_PWD)
-		ft_addenv(env, env->list, "_=/Users/bin/pwd");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/pwd");
 	else if (ok == CMD_EXIT)
-		ft_addenv(env, env->list, "_=/Users/bin/exit");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/exit");
 	else if (ok == CMD_EXPORT)
-		ft_addenv(env, env->list, "_=/Users/bin/export");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/export");
 	else if (ok == CMD_UNSET)
-		ft_addenv(env, env->list, "_=/Users/bin/unset");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/unset");
 	else if (ok == CMD_ENV)
-		ft_addenv(env, env->list, "_=/Users/bin/env");
+		ft_addenv(g_data.env, g_data.env->list, "_=/Users/bin/env");
 }
 
 void	ft_addenv(t_env *env, t_list *list, char *str)

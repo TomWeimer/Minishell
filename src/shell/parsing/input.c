@@ -6,11 +6,12 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:49:34 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:49:35 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/06 12:22:47 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing/parsing.h"
+#include "sub_system/terminal.h"
 
 char	*delete_border_ifs(char *tmp)
 {
@@ -43,9 +44,11 @@ char	*get_user_input(void)
 	tmp = readline("prompt $$ ");
 	if (tmp == NULL)
 	{
+		printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	add_history(tmp);
 	input = delete_border_ifs(tmp);
+	g_data.input = input;
 	return (input);
 }

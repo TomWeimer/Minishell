@@ -8,7 +8,7 @@ OBJ_DIR		:= 	build/
 INC_DIR		:= 	includes/
 
 ##		THE LIBFT			##
-LIBFT_HEADER	:=	./libft
+LIBFT_HEADER	:=	./libft/includes
 LIBFT_DIRECTORY :=	./libft
 LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
@@ -18,7 +18,7 @@ READLIB := -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/in
 # -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
 LIBRAIRIES := -lft -L$(LIBFT_DIRECTORY) $(READLIB)
-CFLAGS := -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=address
 
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)
@@ -58,6 +58,7 @@ SRCS = 																			\
 	./src/main.c																\
 	./src/shell/sub_system/error/error.c										\
 	./src/shell/sub_system/terminal/signal.c									\
+	./src/shell/sub_system/terminal/signal_utils.c								\
 	./src/shell/sub_system/terminal/terminal.c									\
 	./src/shell/sub_system/terminal/cleaning.c									\
 	./src/shell/parsing/input.c													\
@@ -85,12 +86,15 @@ SRCS = 																			\
 	./src/builtin/cd.c															\
 	./src/builtin/echo.c														\
 	./src/shell/sub_system/env/lstenv.c											\
+	./src/shell/sub_system/env/lstenv_utils.c									\
 	./src/shell/sub_system/env/addenv.c											\
 	./src/shell/sub_system/env/environment.c									\
+	./src/shell/sub_system/env/replace_dollar.c									\
 	./src/builtin/export.c														\
+	./src/builtin/export_utils.c												\
 	./src/builtin/unset.c														\
-	./src/shell/sub_system/wildcard/wildcard.c									\
 	./src/shell/execution/commands_execution/execution_base.c					\
+	./src/shell/execution/commands_execution/execution_base_utils.c				\
 	#./src/shell/parsing/utils/print.c											\
 
 HEADERS = \
@@ -127,11 +131,11 @@ $(NAME): $(LIBFT) $(SRCS) $(OBJS)
 		@printf " $(READLIB) $(RESET)\n"
 		@printf "$(GREEN)$(NAME) sucessfully created ! $(RESET)\n"
 clean:
-		@printf "\n $(RED)removing: $(RESET) $(OBJ_DIR)\n$(RESET)"
+		@printf "\n $(RED)removing:\n 		$(RESET) $(NAME) *.o\n$(RESET)"
 		@rm -rf $(OBJ_DIR)
 		@make -C $(LIBFT_DIRECTORY) clean
 fclean: clean
-		@printf "\n $(RED)removing: $(RESET) $(NAME)\n"
+		@printf "		$(RESET) $(NAME)\n"
 		@make -C $(LIBFT_DIRECTORY) clean
 		@rm -rf $(NAME)
 		

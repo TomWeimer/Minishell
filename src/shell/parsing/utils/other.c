@@ -3,16 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   other.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:48:56 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:54:02 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/05 22:53:20 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_checkequal(char **args, t_env *env)
+int	cmp_arg(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (ft_isalpha(arg[0]) == 0)
+		return (1);
+	while (arg[i] != '=')
+	{
+		if (ft_isalnum(arg[i]) == 0)
+			return (1);
+		i++;
+	}
+	ft_addenv(g_data.env, g_data.env->list, arg);
+	return (0);
+}
+
+int	ft_checkequal(char **args)
 {
 	int	i;
 
@@ -20,11 +37,14 @@ int	ft_checkequal(char **args, t_env *env)
 	while (args[++i] != NULL)
 	{
 		if (ft_strchr(args[i], '=') != NULL)
-			ft_addenv(env, env->list, args[i]);
+		{
+			if (cmp_arg(args[i]) == 1)
+				return (0);
+		}
 		else
 			return (0);
 	}
-	return (9);
+	return (10);
 }
 
 int	is_builtin(char *str)

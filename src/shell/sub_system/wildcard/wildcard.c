@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "execution/execution.h"
-
+/*
 void	free_tab(char **tab) //a mettre dans la libft
 {
 	int	i;
@@ -162,3 +162,4 @@ void	ft_wildcard(t_command *cmd)
 		}
 	}
 }
+*/

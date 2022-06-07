@@ -6,48 +6,17 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:46:43 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 15:58:48 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/07 14:50:07 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "execution/execution.h"
 
-
-int	create_temporary_file(void)
-{
-	int	fd;
-
-	fd = open(TMP_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	if (fd == -1)
-		write_error(NULL, NULL);
-	return (fd);
-}
-
-char *pop_here_doc(void)
-{
-	t_here_doc	*tmp;
-	char		*content;
-
-	tmp = NULL;
-	content = NULL;
-	if (g_data.here_doc == NULL)
-		return (NULL);
-	tmp = g_data.here_doc;
-	if (tmp != NULL)
-	{
-		g_data.here_doc = tmp->next;
-		content = ft_strdup(tmp->content);
-		free(tmp->content);
-		free(tmp);
-		tmp = NULL;
-	}
-	else
-		g_data.here_doc = NULL;
-	return (content);
-}
-
-int execute_here_doc(char *str)
+//	During the execution of the here_document we create
+//	a temporary file that will next be used as a normal
+//	redirection of input and then be deleted
+int	execute_here_doc(char *str)
 {
 	int		tmp_fd;
 	char	*content;
@@ -66,11 +35,12 @@ int execute_here_doc(char *str)
 	return (tmp_fd);
 }
 
-char *get_string(int fd)
+// Read form the pipe of the child and transform it into a normal string
+char	*get_string(int fd)
 {
-	int ret;
-	char *buffer;
-	char tmp[2];
+	int		ret;
+	char	*buffer;
+	char	tmp[2];
 
 	buffer = NULL;
 	while (1)
@@ -78,7 +48,7 @@ char *get_string(int fd)
 		ret = read(fd, tmp, 1);
 		tmp[ret] = '\0';
 		if (ret <= 0)
-			break;
+			break ;
 		if (buffer == NULL)
 		{
 			buffer = ft_strdup(tmp);
@@ -88,43 +58,46 @@ char *get_string(int fd)
 			buffer = ft_strjoin_custom(buffer, tmp);
 		}
 		if (ret <= 0)
-			break;
+			break ;
 	}
 	return (buffer);
 }
 
-void here_doc_child(int fd, char *delimiter)
+void	here_doc_child(int fd, char *delimiter)
 {
-	char *input;
+	char	*input;
 
-		while(1)
+	while (1)
+	{
+		input = readline("> ");
+		if (ft_strcmp(input, delimiter) == MATCH)
 		{
-			input = readline("> ");
-			if (ft_strcmp(input, delimiter) == MATCH)
-			{
-				close(fd);
-				free(input);
-				input = NULL;
-				break ;
-			}
-			else
-			{
-				ft_putendl_fd(input, fd);
-			}
+			close(fd);
 			free(input);
 			input = NULL;
+			break ;
 		}
-		exit(0);
+		else
+		{
+			ft_putendl_fd(input, fd);
+		}
+		free(input);
+		input = NULL;
+	}
+	exit(0);
 }
 
-char *get_content(char *delimiter)
+//	We get the content of the here_document
+//	Because we don't want to write in stdin we create a process
+//	And to recuperate all the things that the child contain we
+//	We need a pipe
+char	*get_content(char *delimiter)
 {
-	int pid;
-	int status;
-	int pipefd[2];
-	char *rtn;
+	int		pid;
+	int		status;
+	int		pipefd[2];
+	char	*rtn;
 
-	
 	pipe(pipefd);
 	pid = fork ();
 	if (pid == 0)
@@ -134,7 +107,6 @@ char *get_content(char *delimiter)
 		here_doc_child(pipefd[1], delimiter);
 	}
 	signal(SIGINT, SIG_IGN);
-	//signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	close(pipefd[1]);
 	rtn = get_string(pipefd[0]);
@@ -143,10 +115,12 @@ char *get_content(char *delimiter)
 	return (rtn);
 }
 
-void handle_here_doc(t_command **all_commands)
+//	When the commands are created we create the content of the heredocs
+//	and we store them in actual->input->content to use them later
+void	handle_here_doc(t_command **all_commands)
 {
 	t_command	*actual;
-	int i;
+	int			i;
 
 	i = 0;
 	if (all_commands == NULL || all_commands[0] == NULL)
@@ -156,7 +130,7 @@ void handle_here_doc(t_command **all_commands)
 		actual = all_commands[i];
 		if (actual->input != NULL && actual->input->type == DLESS)
 		{
-			actual->input->content =  get_content(actual->input->file_name);
+			actual->input->content = get_content(actual->input->file_name);
 		}
 		i++;
 	}

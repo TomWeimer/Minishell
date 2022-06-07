@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:20:05 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:49:23 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/05 21:33:24 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,19 @@ int	check_quote(char *word)
 int	check_token_quote(t_group *all_tokens)
 {
 	t_token	*actual;
-	int		quote;
-	int		quote2;
+	int		quote[2];
 
 	actual = all_tokens->first;
 	while (actual != NULL)
 	{
 		if (actual != NULL && actual->word != NULL)
 		{
-			quote = is_quote(actual->word[0]);
-			quote2 = is_quote(actual->word[ft_strlen(actual->word) - 1]);
-			if (quote != quote2)
+			quote[0] = is_quote(actual->word[0]);
+			if (ft_strlen(actual->word) > 1)
+				quote[1] = is_quote(actual->word[ft_strlen(actual->word) - 1]);
+			else
+				quote[1] = NONE;
+			if (quote[0] != quote[1])
 			{
 				if (!check_quote(actual->word))
 				{

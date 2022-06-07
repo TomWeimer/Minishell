@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binary_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:46:59 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:47:00 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/05 20:16:36 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_tree	*new_treenode(void)
 	new = malloc(sizeof(t_tree));
 	if (new == NULL)
 	{
-		write_error(NULL, NULL);
+		write_error(NULL, NULL, NULL);
 		exit (EXIT_FAILURE);
 	}
 	new->cmd = NULL;

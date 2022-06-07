@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:25 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:48:10 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/05 20:24:32 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,18 @@ void	ft_cd(t_command *cmd, t_env *env)
 	{
 		user_access = access(cmd->args[DIRECTORY], F_OK | X_OK);
 		if (user_access == DENIED)
-			write_error(cmd->args[DIRECTORY], "cd :");
-		else
+			write_error(cmd->args[DIRECTORY], "cd: ", MSG_DENIED);
+		else if (user_access == 0)
 		{
 			chdir(cmd->args[DIRECTORY]);
 			oldpwd(env);
 			newpwd(env);
+			g_data.exit_status = 0;
+		}
+		else
+		{
+			g_data.exit_status = 1;
+			write_error(cmd->args[DIRECTORY], "cd: ", MSG_NOT_FOUND);
 		}
 	}
-	else
-		write_error(NULL, "cd :");
 }

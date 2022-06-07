@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/05 21:46:52 by tchappui          #+#    #+#             */
+/*   Updated: 2022/06/06 13:17:50 by tweimer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ENV_H
 # define ENV_H
 
-# include	"../libft/libft.h"
+# include	"libft.h"
 # include	"execution/command.h"
 # include	<stdio.h>
 
 typedef struct s_list
 {
-	char *content;
-	struct s_list *next;
+	char			*content;
+	struct s_list	*next;
 }t_list;
 
 typedef struct s_env
 {
-	int	envsize;
+	int		envsize;
 	t_list	*list;
 	t_list	*temp;
 }t_env;
@@ -30,6 +42,10 @@ void	ft_env(t_list **env, char **envp);
 void	printenv(t_command *cmd, t_env *env, t_list *lst);
 void	ft_unset(t_env *env, char **args);
 void	ft_export(t_env *env, t_list *list, t_command *cmd);
+void	addexport(char *args, t_env *env);
+void	add_export(char *args, t_list *list, t_list *temp);
+void	addexport_equal(t_list *list, char *str);
 char	**ft_remplaceargs(char **args, t_env *env);
+int		ft_lstlen(t_list *lst);
 
 #endif

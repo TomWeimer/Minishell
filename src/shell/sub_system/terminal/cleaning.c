@@ -6,12 +6,14 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:44:06 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 15:50:41 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/06 15:35:46 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "execution/binary_tree.h"
 
+// Free all the allocate memmory of the binary tree
 void	clean_tree(t_tree *node)
 {
 	if (node == NULL)
@@ -22,6 +24,7 @@ void	clean_tree(t_tree *node)
 	node = NULL;
 }
 
+// Free all the allocate memmory of the redirections
 void	clean_cmd_redirection(t_redirection *first)
 {
 	t_redirection	*actual;
@@ -41,6 +44,7 @@ void	clean_cmd_redirection(t_redirection *first)
 	}
 }
 
+// Free all the allocate memmory of the arguments of cmd
 void	clean_cmd_args(char **args)
 {
 	int	i;
@@ -54,6 +58,7 @@ void	clean_cmd_args(char **args)
 	}
 }
 
+// Free all the allocate memmory of cmd and cmd's content
 void	clean_commands(t_command **all_commands)
 {
 	int	i;
@@ -76,6 +81,7 @@ void	clean_commands(t_command **all_commands)
 	}
 }
 
+// Free all the allocate memmory of the arguments of the tokens
 void	clean_tokens(t_group *all_token)
 {
 	t_token	*actual;

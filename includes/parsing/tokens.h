@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/05 21:53:46 by tchappui          #+#    #+#             */
+/*   Updated: 2022/06/05 21:54:30 by tchappui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOKENS_H
 # define TOKENS_H
 
@@ -14,7 +26,6 @@ typedef struct s_group
 	t_token	*first;
 }t_group;
 
-
 // define:
 # define NONE 0
 
@@ -29,22 +40,22 @@ example:
 
 -------------------------------------------------------------------------------- 
 	OPERATORS:				*/
-# define	PIPE		10	// symbol:	'|'
-# define	OR_IF		11	// symbol:	'||'
-# define	AND_IF		12	// symbol:	'&&'
+# define PIPE		10	// symbol:	'|'
+# define OR_IF		11	// symbol:	'||'
+# define AND_IF		12	// symbol:	'&&'
 
 /*	REDIRECTIONS:			*/
-# define	LESS		13	// symbol:	'<'
-# define	MORE		14	// symbol:	'>'
-# define	DLESS		15	// symbol:	'<<'
-# define	DGREAT		16	// symbol:	'>>'
+# define LESS		13	// symbol:	'<'
+# define MORE		14	// symbol:	'>'
+# define DLESS		15	// symbol:	'<<'
+# define DGREAT		16	// symbol:	'>>'
 
 /*	CMD	TOKENS:				*/
-# define	WORD		17	//	delimiter WORD delimiter
-# define	CMD			18	//	the command
-# define	PARAM		19	//	the parameters of the command
-# define	SQUOTED		20	//	symbol:	" WORD "
-# define	DQUOTED 	21	//	symbol:	' WORD '
-# define	INFILE		22	//	Appear after a redirection, is a file_name
-# define	OUTFILE		23	//	Appear after a redirection, is a file_name
+# define WORD		17	//	delimiter WORD delimiter
+# define CMD			18	//	the command
+# define PARAM		19	//	the parameters of the command
+# define SQUOTED		20	//	symbol:	" WORD "
+# define DQUOTED 	21	//	symbol:	' WORD '
+# define INFILE		22	//	Appear after a redirection, is a file_name
+# define OUTFILE		23	//	Appear after a redirection, is a file_name
 #endif

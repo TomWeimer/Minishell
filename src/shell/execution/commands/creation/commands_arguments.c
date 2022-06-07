@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:45:16 by tweimer           #+#    #+#             */
-/*   Updated: 2022/05/27 13:45:17 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/07 14:23:37 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**init_args(int size)
 	new = malloc(sizeof(char *) * (size + 1));
 	if (new == NULL)
 	{
-		write_error(NULL, NULL);
+		write_error(NULL, NULL, NULL);
 		exit (EXIT_FAILURE);
 	}
 	return (new);
@@ -61,6 +61,7 @@ char	**new_args(t_token *actual, int size)
 	return (args);
 }
 
+// create new_cmd->args that contain the commands and the command's parameters
 void	create_arguments(t_token *start, t_command *new_cmd)
 {
 	int	size;
