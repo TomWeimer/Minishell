@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 21:49:15 by tchappui          #+#    #+#             */
-/*   Updated: 2022/06/05 21:49:38 by tchappui         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:11:13 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		manage_node_execution(t_tree *root);
 void		child(t_tree *main_pipe, t_tree *sub_node, int side);
 int			execute_cmd(t_tree *node, int type);
 void		ft_pwd(t_command *cmd);
-void		ft_exit(t_command *cmd);
+void		ft_exit(t_command *cmd, int print);
 void		ft_cd(t_command *cmd, t_env *env);
 void		ft_echo(t_command *cmd);
 int			base_builtin(char **str);

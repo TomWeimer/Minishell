@@ -14,11 +14,11 @@ LIBFT			:=	$(LIBFT_DIRECTORY)/libft.a
 
 ##		COMPILATION			##
 CC := gcc
-READLIB := -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
+READLIB := -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
 LIBRAIRIES := -lft -L$(LIBFT_DIRECTORY) $(READLIB)
-CFLAGS := -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror
 
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)
@@ -126,6 +126,7 @@ $(LIBFT):
 $(NAME): $(LIBFT) $(SRCS) $(OBJS)
 		@printf "$(YEL)\n------------Compiled----------------\n$(RESET)"
 		@printf "$(RESET)$(CC) $(CFLAGS)\n"
+		@make -C $(LIBFT_DIRECTORY)
 		@$(CC) $(CFLAGS)  $(OBJS) -o $(NAME) $(LIBRAIRIES) $(LIBFT)
 		@printf "$(YEL)------------Linked------------------\n$(RESET)"
 		@printf " $(READLIB) $(RESET)\n"
@@ -136,7 +137,7 @@ clean:
 		@make -C $(LIBFT_DIRECTORY) clean
 fclean: clean
 		@printf "		$(RESET) $(NAME)\n"
-		@make -C $(LIBFT_DIRECTORY) clean
+		@make -C $(LIBFT_DIRECTORY) fclean
 		@rm -rf $(NAME)
 		
 

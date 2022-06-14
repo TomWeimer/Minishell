@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:44:37 by tweimer           #+#    #+#             */
-/*   Updated: 2022/06/06 15:42:59 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/13 14:51:17 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ void	clean_shell(void)
 	}
 	if (g_data.binary_tree != NULL)
 		clean_tree(g_data.binary_tree);
+	if (g_data.env != NULL)
+	{
+		clean_env(g_data.env->list);
+		if (g_data.env->temp != NULL)
+			clean_env(g_data.env->temp);
+	}
 }
 
 // Display an error message if the tokens are incorrect or in the case if

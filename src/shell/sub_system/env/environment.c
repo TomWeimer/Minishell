@@ -6,7 +6,7 @@
 /*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 18:19:00 by tchappui          #+#    #+#             */
-/*   Updated: 2022/06/05 21:38:02 by tchappui         ###   ########.fr       */
+/*   Updated: 2022/06/13 14:57:42 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ void	ft_env(t_list **env, char **envp)
 	}
 }
 
-void	printenv(t_command *cmd, t_env *env, t_list *lst)
+void	printenv(t_list *lst)
 {
-	(void)cmd;
-	ft_addenv(env, env->list, "_=/Users/bin/env");
 	while (lst != NULL)
 	{
 		write(1, lst->content, ft_strlen(lst->content));
@@ -36,4 +34,19 @@ void	printenv(t_command *cmd, t_env *env, t_list *lst)
 		lst = lst->next;
 	}
 	g_data.exit_status = 0;
+}
+
+void	clean_env(t_list *lst)
+{
+	t_list	*actual;
+	t_list	*to_delete;
+
+	to_delete = NULL;
+	actual = lst;
+	while (actual != NULL)
+	{
+		to_delete = actual;
+		actual = actual->next;
+		free(to_delete);
+	}
 }

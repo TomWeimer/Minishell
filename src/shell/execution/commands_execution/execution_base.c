@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tchappui <tchappui@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 14:54:19 by tchappui          #+#    #+#             */
-/*   Updated: 2022/06/07 14:52:39 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/09 15:02:38 by tchappui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	base_builtin(char **str)
 		write_error(str[0], "Minishel: ", CMD_NOT_FOUND);
 		return (1);
 	}
-	free(cmd);
 	block_signals_from_keyboard();
 	return (0);
 }

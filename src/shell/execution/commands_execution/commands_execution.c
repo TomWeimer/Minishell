@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:46:52 by tweimer           #+#    #+#             */
-/*   Updated: 2022/06/07 14:42:05 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 12:11:07 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,20 @@ void	execute_builtin(t_tree *node, int ok)
 	else if (ok == CMD_PWD)
 		ft_pwd(node->cmd);
 	else if (ok == CMD_EXIT)
-		ft_exit(node->cmd);
+	{
+		if (node != NULL && node->previous != NULL
+			&& node->previous->token != NULL
+			&& node->previous->token->type == PIPE)
+			ft_exit(node->cmd, NO);
+		else
+			ft_exit(node->cmd, OK);
+	}
 	else if (ok == CMD_EXPORT)
 		ft_export(g_data.env, g_data.env->list, node->cmd);
 	else if (ok == CMD_UNSET)
 		ft_unset(g_data.env, node->cmd->args);
 	else if (ok == CMD_ENV)
-		printenv(node->cmd, g_data.env, g_data.env->list);
+		printenv(g_data.env->list);
 	ft_lastcmd(ok);
 }
 

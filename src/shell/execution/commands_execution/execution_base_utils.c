@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 20:12:30 by tchappui          #+#    #+#             */
-/*   Updated: 2022/06/07 14:42:47 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 14:12:20 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,18 @@ static char	*find_path3(t_list *list)
 	int		i;
 
 	i = 0;
+	rtn = NULL;
 	while (list != NULL)
 	{
 		if (ft_strncmp(list->content, "PATH=", 5) == 0)
+		{
+			i = 1;
 			break ;
+		}
 		list = list->next;
-		i++;
 	}
-	rtn = ft_substr(list->content, 5, ft_strlen(list->content) - 5);
+	if (i == 1)
+		rtn = ft_substr(list->content, 5, ft_strlen(list->content) - 5);
 	return (rtn);
 }
 
@@ -37,8 +41,10 @@ static char	**find_path2(t_list *list)
 	char	**path;
 	int		i;
 
-	arg = NULL;
+	path = NULL;
 	arg = find_path3(list);
+	if (arg == NULL)
+		return (path);
 	path = ft_split(arg, ':');
 	free(arg);
 	arg = NULL;
@@ -65,23 +71,23 @@ char	*find_path(t_list *list, char *arg)
 
 	if (access(arg, F_OK) != -1)
 	{
-		if (ft_strncmp(arg, "./", 2) == 0)
+		if (ft_strncmp(arg, "./", 2) == 0
+			|| ft_strncmp(arg, "/", 1) == 0)
 			return (arg);
 		return (NULL);
 	}
-	i = 0;
+	i = -1;
 	path = find_path2(list);
-	while (path[i] != 0)
+	if (path != NULL)
 	{
-		cmd = ft_strjoin(path[i], arg);
-		if (access(cmd, F_OK) == -1)
+		while (path[++i] != 0)
 		{
-			free(cmd);
-			cmd = NULL;
-			i++;
+			cmd = ft_strjoin(path[i], arg);
+			if (access(cmd, F_OK) == -1)
+				free(cmd);
+			else
+				return (cmd);
 		}
-		else
-			return (cmd);
 	}
 	return (NULL);
 }

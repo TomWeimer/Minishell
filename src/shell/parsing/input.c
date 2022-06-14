@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:49:34 by tweimer           #+#    #+#             */
-/*   Updated: 2022/06/06 12:22:47 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 13:23:11 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ char	*delete_border_ifs(char *tmp)
 	j = size;
 	while (tmp[i] != '\0' && is_ifs(tmp[i]) == YES)
 		i++;
+	if (i == j + 1)
+	{
+		free(tmp);
+		tmp = NULL;
+		return (NULL);
+	}
 	while (j > 0 && is_ifs(tmp[j]) == YES)
 		j--;
 	input = ft_substr(tmp, i, (j - i) + 1);
@@ -41,6 +47,7 @@ char	*get_user_input(void)
 
 	tmp = NULL;
 	input = NULL;
+	block_signals_from_keyboard();
 	tmp = readline("prompt $$ ");
 	if (tmp == NULL)
 	{
