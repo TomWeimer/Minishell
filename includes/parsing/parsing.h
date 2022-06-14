@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 21:52:42 by tchappui          #+#    #+#             */
-/*   Updated: 2022/06/06 12:13:46 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 15:10:00 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define OK		1
 # define ERROR	0
 # define QUOTE_ERROR "The syntax is false the brackets aren't in par!\n"
+# define OP_SYNTAX "syntax error near unexpected token operator"
 
 // prototypes:
 int				is_ifs(char c);
@@ -50,5 +51,6 @@ int				token_attribution(t_group *token_group);
 void			add_new_token(t_token *new_token, t_group *all_token);
 int				check_token_quote(t_group *all_tokens);
 t_group			*init_all_tokens(void);
+int				check_pipe(t_group* all_token);
 
 #endif

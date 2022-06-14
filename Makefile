@@ -18,7 +18,7 @@ READLIB := -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L $(HOME)/.brew/opt/readline/lib
 # -lreadline -L /opt/homebrew/opt/readline/lib -I .brew/opt/readline/include
 LIBRAIRIES := -lft -L$(LIBFT_DIRECTORY) $(READLIB)
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror #-g3 -fsanitize=address
 
 ##		INCLUDES			##
 CFLAGS	+= -I$(INC_DIR) -I$(LIBFT_HEADER)

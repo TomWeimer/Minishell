@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:45:08 by tweimer           #+#    #+#             */
-/*   Updated: 2022/06/06 16:19:06 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 15:13:26 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	generate_tokens(char *input, t_group *all_tokens)
 t_group	*tokenizer(char *input)
 {
 	t_group	*all_tokens;
+	int error;
 
 	all_tokens = init_all_tokens();
 	generate_tokens(input, all_tokens);
@@ -118,7 +119,15 @@ t_group	*tokenizer(char *input)
 	{
 		return (NULL);
 	}
-	token_attribution(all_tokens);
+	error = token_attribution(all_tokens);
+	if (error == ERROR || check_pipe(all_tokens) == NO)
+	{
+		if (error != ERROR)
+			write_error(NULL, NULL, OP_SYNTAX);
+		clean_tokens(all_tokens);
+		free(all_tokens);
+		all_tokens = NULL;
+	}
 	g_data.all_tokens = all_tokens;
 	return (all_tokens);
 }

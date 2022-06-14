@@ -6,7 +6,7 @@
 /*   By: tweimer <tweimer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:46:52 by tweimer           #+#    #+#             */
-/*   Updated: 2022/06/14 12:11:07 by tweimer          ###   ########.fr       */
+/*   Updated: 2022/06/14 14:41:00 by tweimer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	shell_execution(t_group *all_token, t_command **all_command)
 {
 	t_tree	*root;
 
+	if (all_command == NULL)
+		return ;
 	root = binary_tree(all_token, all_command);
 	g_data.binary_tree = root;
 	manage_node_execution(root);
